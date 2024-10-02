@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { TicketController } from "./ticket.controller";
+import { TicketService } from "./ticket.service";
 
 
 export class TicketRoutes {
@@ -8,13 +9,17 @@ export class TicketRoutes {
     static get routes() {
         const router = Router();
 
-        const ticketController = new TicketController();
+        const ticketService = new TicketService();
+        const ticketController = new TicketController(ticketService);
 
         router.get('/', ticketController.getTickets);
+        router.get('/last', ticketController.getLastTicketNumber);
+        router.get('/pendant', ticketController.getPendantTickets);
+        router.get('/workingOn', ticketController.getWorkingOnTickets);
         router.post('/', ticketController.createTicket);
 
-        router.get('/assign/:desk', ticketController.assignTicket);
-        router.put('/done/:ticketId', ticketController.doneTicket);
+        router.patch('/assign/:desk', ticketController.assignTicket);
+        router.patch('/done/:ticketId', ticketController.doneTicket);
 
 
 

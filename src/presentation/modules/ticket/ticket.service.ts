@@ -14,8 +14,14 @@ export class TicketService {
         { id: UuidAdapter.v4(), number: 7, done: false, createdAt: new Date() },
     ];
 
+    public getTickets() {
+        return this.tickets;
+    }
+
+    private readonly workingOnTickets: Ticket[] = [];
+
     public getPendantTickets(): Ticket[] {
-        return this.tickets.filter(ticket => !ticket.done);
+        return this.tickets.filter(ticket => !ticket.done && !ticket.handleAtDesk);
     }
 
     public getLastTicketNumber() {
@@ -33,11 +39,15 @@ export class TicketService {
         return ticket;
     }
 
-    public assignTicket(): Ticket {
+    public assignTicket(desk: string): Ticket {
         const ticket = this.getPendantTickets().shift();
         if (!ticket) {
             throw new Error('No pendant tickets');
         }
+        ticket.handleAtDesk = desk;
+        ticket.handleAt = new Date();
+
+        this.workingOnTickets.unshift({ ...ticket });
         return ticket;
     }
 
@@ -60,8 +70,8 @@ export class TicketService {
         return ticket;
     }
 
-    public ticketsWorkingOn = () => {
-        return this.tickets.filter(ticket => ticket.handleAt);
+    public ticketsWorkingOn = (limit: number = 4) => {
+        return this.workingOnTickets.splice(0, limit);
     }
 
 }

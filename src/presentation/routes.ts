@@ -12,7 +12,7 @@ export class AppRoutes {
     const router = Router();
 
     // Definir las rutas
-    router.use('/api/tickets', TicketRoutes.routes);
+    router.use('/api/ticket', TicketRoutes.routes);
 
 
     return router;
