@@ -1,8 +1,13 @@
 import { UuidAdapter } from "../../../config/uuid.adapter";
 import { Ticket } from "../../../domain/interfaces/ticket";
+import { WssService } from "../websocket/wss.service";
 
 
 export class TicketService {
+
+    constructor(
+        private readonly wssService = WssService.instance,
+    ) { }
 
     private readonly tickets: Ticket[] = [
         { id: UuidAdapter.v4(), number: 1, done: false, createdAt: new Date() },
@@ -36,6 +41,7 @@ export class TicketService {
             createdAt: new Date(),
         };
         this.tickets.push(ticket);
+        this.onTicketNumberChange();
         return ticket;
     }
 
@@ -72,6 +78,10 @@ export class TicketService {
 
     public ticketsWorkingOn = (limit: number = 4) => {
         return this.workingOnTickets.splice(0, limit);
+    }
+
+    private onTicketNumberChange = () => {
+        this.wssService.sendMessage('on-ticket-count-changed', this.getPendantTickets().length);
     }
 
 }
