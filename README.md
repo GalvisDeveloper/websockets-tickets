@@ -6,9 +6,7 @@ Cada paso de su configuración ya se ha realizado previamente en el curso, por l
 
 ## Ejecucion del frontend
 
-<code> cd front </code>
-<code> pnpm i </code>
-<code> pnpm dev </code>
+Abrir en el navegador localhost en el puerto establecido
 
 ## Ejecucion del backend
 

@@ -54,6 +54,8 @@ export class TicketService {
         ticket.handleAt = new Date();
 
         this.workingOnTickets.unshift({ ...ticket });
+        this.onTicketNumberChange();
+        this.onAssignTicket();
         return ticket;
     }
 
@@ -77,11 +79,15 @@ export class TicketService {
     }
 
     public ticketsWorkingOn = (limit: number = 4) => {
-        return this.workingOnTickets.splice(0, limit);
+        return this.workingOnTickets.slice(0, limit);
     }
 
     private onTicketNumberChange = () => {
         this.wssService.sendMessage('on-ticket-count-changed', this.getPendantTickets().length);
+    }
+
+    private onAssignTicket = () => {
+        this.wssService.sendMessage('on-assign-ticket', this.ticketsWorkingOn());
     }
 
 }

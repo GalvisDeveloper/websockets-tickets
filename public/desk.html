@@ -16,10 +16,15 @@
     <hr>
     <div class="row">
         <div class="col-8">
-            <h4>Atendiendo a <small class="text-primary">....</small></h4>
+            <h4 id="currentTicket" class="d-none">Atendiendo a <small class="text-primary">....</small></h4>
+            <h4 id="no-ticket">No se esta atendiendo ningun ticket <small class="text-primary">....</small></h4>
 
-            <button class="btn btn-primary mt-5">
+            <button id="btn-assign" class="btn btn-primary mt-5" onclick="assignTicket()">
                 Atender siguiente ticket
+            </button>
+
+            <button id="btn-done" class="btn btn-primary mt-5 d-none" onclick="handleDone()">
+                Terminar atención
             </button>
         </div>
 
